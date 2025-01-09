@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Design Pattern</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		<style>
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-auto-animate>
+					<h1>Lazy Loading/Initialization</h1>
+					<h3 style="  color: grey">Sukhmeet Khalar</h3>
+					<h3 style="  color:grey">SWEN 656</h3>
+					<p>University Maryland Global Campus</p>
+				</section>
+				<section data-auto-animate>
+					<h3>What is lazy loading?</h3>
+					<hr/>
+					<p class="fragment fade-up">
+						Lazy loading is a way to make programs and websites be performant by only loading things that are needed, instead of loading everything at once. It involves delaying the loading of resource or data until it is actually needed. This approach helps reduce unnecessary computations, memory usage, and bandwidth consumption.
+					</p>
+					<p class="fragment fade-up">Think of lazy loading like streaming a show or movie. The current and next scene is loaded so it can continue to play instead of waiting for the whole show/movie to download.</p>
+				</section>
+				<section data-auto-animate>
+					<h3>What is lazy initialization?</h3>
+					<hr/>
+					<p class="fragment fade-up">Lazy initialization is a design pattern used in programming to delay the creation or initialization of an object, resource, or computation until it is actually needed. This approach has the potential to enhance performance and decrease resource consumption, particularly when the initialization process is costly and the object or resource may not be utilized during the program's execution.</p>
+				</section>
+				<section data-auto-animate>
+					<h3>What is the difference?</h3>
+					<hr/>
+					<p class="fragment fade-up">Lazy loading and initialization are similar in that they perform a similar task: deferring the fetching or creation of an object. The main difference is that lazy loading is primarily used in web development, while lazy initialization is used in Object oriented languages like C, C++, and Java when deferring to create an object.</p>
+				</section>
+				<section data-auto-animate>
+					<h3>Lazy Loading Example (HTML)</h3>
+					<hr/>
+					<p style="  font-size: .75em">The <code>loading</code> attribute on an <code>&lt;img&gt;</code> or <code>>&lt;iframe&gt;</code> element can be used to tell the browser to delay loading off-screen images or iframes until the user scrolls near them. This helps load non-essential resources only when necessary, which can improve initial page load times and reduce network usage.<sup style="  font-size: .5em">1</sup></p>
+
+					<pre><code class="html" data-line-numbers><img loading="lazy" src="image.jpg" alt="..."/>
+<iframe loading="lazy" src="video-player.html" title="..."></iframe>
+				</code></pre>
+					<div style="  text-align: left; font-size: .5em">[1] Lazy loading - Web performance | MDN. (2024, December 19). MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading</div>
+				</section>
+				<section data-auto-animate>
+					<h3>Lazy Loading Example (Javascript)</h3>
+					<hr/>
+					<p style="  font-size: .75em">In this example, the web page does not load the dialog component until the user clicks a button.<sup style="  font-size: .5em">1</sup></p>
+					<pre><code class="javascript" data-line-numbers="|5|6-7" data-fragment-index="0">
+const button = document.querySelector('#loadComponent');
+button.addEventListener('click', async () => {
+try {
+	const module = await import('./components/MyComponent.js');
+	const component = new module.default();
+	component.render();
+	} catch (error) {
+		console.error('Error loading component:', error);
+	}
+});
+					</code></pre>
+					<div class="fragment current-visible" style="  font-size: .75em; position: absolute" data-fragment-index="0">When the user click the button, the browser will load the javascript file containing the component data. Not before.</div>
+					<div class="fragment current-visible" style="  font-size: .75em; position: absolute" data-fragment-index="1">The component is loaded, and then rendered. This ensures that the component is only loaded and rendered when the button is clicked.</div>
+					<div style="  font-size: .35em; text-align: left; position: absolute;bottom: -29%;">[1] Turcotte, A., Gokhale, S., & Tip, F. (2023). Increasing the Responsiveness of Web Applications by Introducing Lazy Loading. In 2023 38th IEEE/ACM International Conference on Automated Software Engineering (ASE) (pp. 459-470).</div>
+				</section>
+				<section data-auto-animate="">
+					<h3>Lazy Initialization Example (Java)</h3>
+					<hr/>
+					<p style="  font-size: .75em">In this example, the a class that has some heavy initialization is deferred until the class is needed.</p>
+					<pre><code class="javascript" data-line-numbers="|3|5|6-8" data-fragment-index="0">
+public class LazyExample {
+    private SomeHeavyInitializingClass heavy;
+
+    public Heavy getHeavy() {
+        if (heavy == null) {
+            heavy = new SomeHeavyInitializingClass(); // Only initialized when first accessed
+        }
+        return heavy;
+    }
+}
+					</code></pre>
+					<div class="fragment current-visible" style="  font-size: .75em; position: absolute" data-fragment-index="0">The class creates a variable called `heavy` and it has not been intialized.</div>
+					<div class="fragment current-visible" style="  font-size: .75em; position: absolute" data-fragment-index="1">When the SomeHeavyInitializingClass is needed the method `getHeavy` is called.</div>
+					<div class="fragment current-visible" style="  font-size: .75em; position: absolute" data-fragment-index="2">The `getHeavy` is called, it checks to see if the heavy class has been initialized, if it hasn't it will be created.</div>
+				</section>
+				<section data-auto-animate>
+					<h3>Advantages</h3>
+					<hr/>
+					<div style="  text-align: left">
+						<ul>
+							<li>Faster initial load time</li>
+							<li>Reducing bandwidth consumption</li>
+							<li>Reduces system resource consumption</li>
+							<li>Increrased performance</li>
+						</ul>
+					</div>
+				</section>
+				<section data-auto-animate>
+					<h3>Disadvantages</h3>
+					<hr/>
+					<div style="  text-align: left">
+						<ul>
+							<li>Additional requests to the server</li>
+							<li>Requests for resources are faster they can load (I.e. user scrolls too fast for images to load)</li>
+							<li>Added complexity to code base</li>
+							<li>If a resource is requests frequently, the additional checks may cause performance issue</li>
+						</ul>
+					</div>
+				</section>
+				<section data-auto-animate>
+					<h3>Conclusion</h3>
+					<hr />
+					<p>Lazy loading is a design pattern that optimizes performance by delaying the loading of resources until they are actually needed, reducing initial startup time and improving resource management. Lazy initialization, which is the most common implementation approach, specifically uses null as a marker value to indicate an unloaded field and only loads it upon first access.</p>
+				</section>
+				<section>
+					<h3>References</h3>
+					<hr/>
+					<p class="reference">Cloudflare. (n.d.). What is lazy loading? What Is Lazy Loading? Retrieved January 9, 2025, from https://www.cloudflare.com/learning/performance/what-is-lazy-loading/</p>
+					<p class="reference">D, P. (2024, October 1). Understanding the trade-offs between lazy initialization and eager initialization in software development. peerdh.com. https://peerdh.com/blogs/programming-insights/understanding-the-trade-offs-between-lazy-initialization-and-eager-initialization-in-software-development</p>
+					<p class="reference">Lazy loading - Web performance | MDN. (2024, December 19). MDN Web Docs. https://developer.mozilla.org/en-US/docs/Web/Performance/Lazy_loading</p>
+					<p class="reference">Oaks, Scott. (2014). Java performance : the definitive guide (1st edition). O’Reilly Media.</p>
+					<p class="reference">Turcotte, A., Gokhale, S., & Tip, F. (2023). Increasing the Responsiveness of Web Applications by Introducing Lazy Loading. In 2023 38th IEEE/ACM International Conference on Automated Software Engineering (ASE) (pp. 459-470).</p>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about init------------------------ialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes]
+			});
+		</script>
+	</body>
+</html>
