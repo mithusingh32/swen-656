@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Design Pattern</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		<style>
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-auto-animate data-markdown>
+					<textarea data-template>
+						---
+						theme: simple
+						---
+
+						## The Yo-Yo Problem
+						### An Anti-Pattern in Software Development
+
+						---
+
+						## What is an Anti-Pattern?
+
+						- A **common but ineffective approach** to solving recurring problems
+						- Results in **negative consequences**
+						- Often emerges from trying to solve problems in seemingly intuitive ways
+
+						---
+
+						## The Yo-Yo Problem Defined
+
+						- An **anti-pattern in software development** where programmers must navigate through complex inheritance hierarchies 【1】
+						- Like a yo-yo, developers bounce up and down the inheritance chain
+						- Makes code harder to understand and maintain
+
+						---
+
+						## Real-World Example
+
+						```java
+						class Shape {
+						    protected String color;
+
+						    public void draw() {
+						        prepareCanvas();
+						        render();
+						    }
+
+						    protected void prepareCanvas() {
+						        // Base implementation
+						    }
+
+						    protected void render() {
+						        // Must be implemented by subclasses
+						    }
+						}
+
+						class Circle extends Shape {
+						    private int radius;
+
+						    @Override
+						    protected void render() {
+						        // Need to understand Shape.draw() first
+						        // Then Shape.prepareCanvas()
+						        // Finally back to Circle.render()
+						    }
+						}
+						```
+
+						---
+
+						## Why This is Problematic
+
+						Consider this inheritance chain:
+
+						```java
+						class DataHashSet extends HashSet {
+						    private int addCount = 0;
+
+						    @Override
+						    public boolean add(Object o) {
+						        addCount++;
+						        return super.add(o);
+						    }
+
+						    @Override
+						    public boolean addAll(Collection c) {
+						        addCount += c.size();
+						        return super.addAll(c); // Problem here!
+						    }
+						}
+						```
+
+						- `addAll()` in `HashSet` internally calls `add()` 【2】
+						- Results in **double counting** due to yo-yo effect
+						- Developer needs to bounce between:
+						  1. `DataHashSet.addAll()`
+						  2. `HashSet.addAll()`
+						  3. `DataHashSet.add()`
+
+						---
+
+						## Common Causes
+
+						1. **Deep Inheritance Hierarchies**
+						```java
+						class Vehicle {}
+						class MotorVehicle extends Vehicle {}
+						class Car extends MotorVehicle {}
+						class SportsCar extends Car {}
+						class RaceCar extends SportsCar {}
+						```
+
+						2. **Framework Method Dispersion**
+						- Methods scattered across different levels of hierarchy 【3】
+						- Forces developers to trace through multiple layers
+
+						---
+
+						## Prevention Strategies
+
+						1. **Prefer Composition Over Inheritance**
+
+						```java
+						// Instead of inheritance
+						class BetterDataSet {
+						    private HashSet<Object> set = new HashSet<>();
+						    private int addCount = 0;
+
+						    public boolean add(Object o) {
+						        addCount++;
+						        return set.add(o);
+						    }
+						}
+						```
+
+						2. **Keep Inheritance Hierarchies Shallow**
+						3. **Document Class Relationships** 【4】
+
+						---
+
+						## Best Practices
+
+						1. **Design Guidelines:**
+						   - Limit inheritance depth to 2-3 levels
+						   - Use interfaces for contract definitions
+						   - Document method behavior clearly
+
+						2. **Code Organization:**
+						   - Group related functionality
+						   - Use package structure effectively
+						   - Consider using design patterns like Strategy or Decorator
+
+						---
+
+						## Real-World Impact
+
+						- **Maintenance Cost:** More time spent understanding code
+						- **Bug Potential:** Higher risk of introducing bugs
+						- **Developer Experience:** Frustration and reduced productivity
+						- **Code Quality:** Decreased readability and maintainability
+
+						---
+
+						## Questions?
+
+						Thank you for your attention!
+					</textarea>
+				</section>
+
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about init------------------------ialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes]
+			});
+		</script>
+	</body>
+</html>
