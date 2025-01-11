@@ -1,200 +1,152 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>Design Pattern</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+  <title>Design Pattern</title>
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-		<style>
-		</style>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section data-auto-animate data-markdown>
-					<textarea data-template>
-						---
-						theme: simple
-						---
+  <link rel="stylesheet" href="dist/reset.css">
+  <link rel="stylesheet" href="dist/reveal.css">
+  <link rel="stylesheet" href="dist/theme/black.css">
 
-						## The Yo-Yo Problem
-						### An Anti-Pattern in Software Development
+  <!-- Theme used for syntax highlighted code -->
+  <link rel="stylesheet" href="plugin/highlight/monokai.css">
+  <style>
+  </style>
+</head>
 
-						---
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section data-auto-animate>
+        <h3 class="fragment" data-fragment-index="0">The Yo-Yo Problem</h3>
+        <img class="fragment fade-down" data-fragment-index="1"
+          src="https://cdn.dribbble.com/users/893939/screenshots/2427012/kid-yo-yo.gif"/>
+        <h4 class="fragment fade-in">An Anti-Pattern in Software Development</h4>
+        <div class="cite fragment fade-down" data-fragment-index="1">Eleftheroglou, G. (n.d.). Kid Yo Yo.
+          https://dribbble.com/shots/2427012-Kid-Yo-Yo/attachments/9294759?mode=media</div>
+      </section>
+      <section data-auto-animate>
+        <h3>What is an Anti-Pattern</h3>
+        <hr/>
+        <p>It's a common but ineffective approach to solving a recurring problem(s). This usually results in negative
+          consequences.</p>
+      </section>
+      <section data-auto-animate>
+        <h3>What is the Yo-Yo Anti-Pattern</h3>
+        <hr/>
+        <p>The "Yoyo Problem" refers to a specific drawback in Object-Oriented Programming (OOP) where excessive use of
+          inheritance can make code harder to understand. The name comes from the up-and-down (switching between class
+          definitions) motion developers must make when reading code</p>
+        <div class="cite">Stephen Shum, & Curtis Cook (1993). AOPS: an abstraction-oriented programming system for
+          literate programming. Software Engineering Journal, 8, 113-120.</div>
+      </section>
+      <section data-auto-animate>
+        <h3>Example (Java)</h3>
+        <hr/>
+        <pre><code class="javascript" data-trim data-line-numbers="|26-30|28|19-24|11-17|1-9|20-23" data-fragment-index="0">
+          class Animal {
+              public void makeSound() {
+                  System.out.println("Animal: preparing sound");
+                  doMakeSound();
+              }
+              protected void doMakeSound() {
+                System.out.println("Generic sound");
+              }
+            }
 
-						## What is an Anti-Pattern?
+            class Mammal extends Animal {
+                @Override
+                public void makeSound() {
+                    System.out.println("Mammal: warming up vocals");
+                    super.makeSound();
+                }
+            }
 
-						- A **common but ineffective approach** to solving recurring problems
-						- Results in **negative consequences**
-						- Often emerges from trying to solve problems in seemingly intuitive ways
+            class Dog extends Mammal {
+                @Override
+                protected void doMakeSound() {
+                    System.out.println("Woof!");
+                }
+            }
 
-						---
+            public class Main {
+                public static void main(String[] args) {
+                    new Dog().makeSound();
+                }
+            }
+          </code></pre>
+        <div class="fragment current-visible" style="font-size: .75em;" data-fragment-index="0">
+          <p>Running this program outputs:</p>
+          <div>
+            <code>
+            Mammal: warming up vocals<br/>
+            Animal: preparing sound<br/>
+            Woof!
+            </code>
+            <br/>
+            This does not seem correct, the developer was expecting only "Woof" as the outpout.
+          </div>
+        </div>
+        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%"
+          data-fragment-index="1">The Develoepr see the new instancce of a Dog class and calls `makeSound()`</div>
+        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%"
+          data-fragment-index="2">They go to Dog class to look for the definition of the method, and noticed it doesn't
+          have a `makeSound` method</div>
+        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%"
+          data-fragment-index="3">The Dog inherits from Mammal, so the developer goes up to that class.</div>
+        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 5%" data-fragment-index="4">Now,
+          we go to the Animal class to see the implmentation of `makeSound`, but we see that it calls `doMakeSound`. The
+          developer would think the output "Generic sound" would be the output.</div>
+        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%" data-fragment-index="5">But
+          doMakeSound is overriden by Dog so the developer has to scroll back down to Dog class to see the
+          implementation.</div>
+        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%" data-fragment-index="0">
+        </div>
+      </section>
+      <section data-auto-animate>
+        <h3>What did you notice?</h3>
+        <hr/>
+        <div class="fragment fade-down">
+          The developer was scrolling up and down the code to understand why the output was not what they expected.
+          This is the what is referred to a Yo-Yo antipattern.</div>
+      </section>
+      <section data-auto-animate>
+        <h3>How to avoid the Yo Yo Problem?</h3>
+        <hr />
+        <div style="text-align: left">
+          <ul>
+            <li>Reduce deep hierarchies</li>
+            <li>
+              Use composition over inheritance
+              <ul>
+                <li>"has-a" relationship over "is-a" relationship</li>
+              </ul>
+            </li>
+            
+          </ul>
+        </div>
+      </section>
+    </div>
+  </div>
 
-						## The Yo-Yo Problem Defined
+  <script src="dist/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    // More info about init------------------------ialization & config:
+    // - https://revealjs.com/initialization/
+    // - https://revealjs.com/config/
+    Reveal.initialize({
+      hash: true,
 
-						- An **anti-pattern in software development** where programmers must navigate through complex inheritance hierarchies 【1】
-						- Like a yo-yo, developers bounce up and down the inheritance chain
-						- Makes code harder to understand and maintain
+      // Learn about plugins: https://revealjs.com/plugins/
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
+    });
+  </script>
+</body>
 
-						---
-
-						## Real-World Example
-
-						```java
-						class Shape {
-						    protected String color;
-
-						    public void draw() {
-						        prepareCanvas();
-						        render();
-						    }
-
-						    protected void prepareCanvas() {
-						        // Base implementation
-						    }
-
-						    protected void render() {
-						        // Must be implemented by subclasses
-						    }
-						}
-
-						class Circle extends Shape {
-						    private int radius;
-
-						    @Override
-						    protected void render() {
-						        // Need to understand Shape.draw() first
-						        // Then Shape.prepareCanvas()
-						        // Finally back to Circle.render()
-						    }
-						}
-						```
-
-						---
-
-						## Why This is Problematic
-
-						Consider this inheritance chain:
-
-						```java
-						class DataHashSet extends HashSet {
-						    private int addCount = 0;
-
-						    @Override
-						    public boolean add(Object o) {
-						        addCount++;
-						        return super.add(o);
-						    }
-
-						    @Override
-						    public boolean addAll(Collection c) {
-						        addCount += c.size();
-						        return super.addAll(c); // Problem here!
-						    }
-						}
-						```
-
-						- `addAll()` in `HashSet` internally calls `add()` 【2】
-						- Results in **double counting** due to yo-yo effect
-						- Developer needs to bounce between:
-						  1. `DataHashSet.addAll()`
-						  2. `HashSet.addAll()`
-						  3. `DataHashSet.add()`
-
-						---
-
-						## Common Causes
-
-						1. **Deep Inheritance Hierarchies**
-						```java
-						class Vehicle {}
-						class MotorVehicle extends Vehicle {}
-						class Car extends MotorVehicle {}
-						class SportsCar extends Car {}
-						class RaceCar extends SportsCar {}
-						```
-
-						2. **Framework Method Dispersion**
-						- Methods scattered across different levels of hierarchy 【3】
-						- Forces developers to trace through multiple layers
-
-						---
-
-						## Prevention Strategies
-
-						1. **Prefer Composition Over Inheritance**
-
-						```java
-						// Instead of inheritance
-						class BetterDataSet {
-						    private HashSet<Object> set = new HashSet<>();
-						    private int addCount = 0;
-
-						    public boolean add(Object o) {
-						        addCount++;
-						        return set.add(o);
-						    }
-						}
-						```
-
-						2. **Keep Inheritance Hierarchies Shallow**
-						3. **Document Class Relationships** 【4】
-
-						---
-
-						## Best Practices
-
-						1. **Design Guidelines:**
-						   - Limit inheritance depth to 2-3 levels
-						   - Use interfaces for contract definitions
-						   - Document method behavior clearly
-
-						2. **Code Organization:**
-						   - Group related functionality
-						   - Use package structure effectively
-						   - Consider using design patterns like Strategy or Decorator
-
-						---
-
-						## Real-World Impact
-
-						- **Maintenance Cost:** More time spent understanding code
-						- **Bug Potential:** Higher risk of introducing bugs
-						- **Developer Experience:** Frustration and reduced productivity
-						- **Code Quality:** Decreased readability and maintainability
-
-						---
-
-						## Questions?
-
-						Thank you for your attention!
-					</textarea>
-				</section>
-
-			</div>
-		</div>
-
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about init------------------------ialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
-
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes]
-			});
-		</script>
-	</body>
 </html>
