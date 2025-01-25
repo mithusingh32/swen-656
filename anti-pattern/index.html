@@ -55,30 +55,30 @@
               protected void doMakeSound() {
                 System.out.println("Generic sound");
               }
-            }
+          }
 
-            class Mammal extends Animal {
-                @Override
-                public void makeSound() {
-                    System.out.println("Mammal: warming up vocals");
-                    super.makeSound();
+          class Mammal extends Animal {
+              @Override
+              public void makeSound() {
+                  System.out.println("Mammal: warming up vocals");
+                  super.makeSound();
                 }
-            }
+          }
 
-            class Dog extends Mammal {
-                @Override
-                protected void doMakeSound() {
-                    System.out.println("Woof!");
-                }
-            }
+          class Dog extends Mammal {
+              @Override
+              protected void doMakeSound() {
+                  System.out.println("Woof!");
+               }
+          }
 
-            public class Main {
-                public static void main(String[] args) {
-                    new Dog().makeSound();
-                }
-            }
+          public class Main {
+              public static void main(String[] args) {
+                  new Dog().makeSound();
+              }
+          }
           </code></pre>
-        <div class="fragment current-visible" style="font-size: .75em;" data-fragment-index="0">
+        <div class="fragment current-visible" style=" font-size: .75em;" data-fragment-index="0">
           <p>Running this program outputs:</p>
           <div>
             <code>
@@ -90,20 +90,20 @@
             This does not seem correct, the developer was expecting only "Woof" as the outpout.
           </div>
         </div>
-        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%"
+        <div class="fragment current-visible" style=" font-size: .75em; position: absolute; bottom: 15%"
           data-fragment-index="1">The Develoepr see the new instancce of a Dog class and calls `makeSound()`</div>
-        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%"
+        <div class="fragment current-visible" style=" font-size: .75em; position: absolute; bottom: 15%"
           data-fragment-index="2">They go to Dog class to look for the definition of the method, and noticed it doesn't
           have a `makeSound` method</div>
-        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%"
+        <div class="fragment current-visible" style=" font-size: .75em; position: absolute; bottom: 15%"
           data-fragment-index="3">The Dog inherits from Mammal, so the developer goes up to that class.</div>
-        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 5%" data-fragment-index="4">Now,
+        <div class="fragment current-visible" style=" font-size: .75em; position: absolute; bottom: 5%" data-fragment-index="4">Now,
           we go to the Animal class to see the implmentation of `makeSound`, but we see that it calls `doMakeSound`. The
           developer would think the output "Generic sound" would be the output.</div>
-        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%" data-fragment-index="5">But
+        <div class="fragment current-visible" style=" font-size: .75em; position: absolute; bottom: 15%" data-fragment-index="5">But
           doMakeSound is overriden by Dog so the developer has to scroll back down to Dog class to see the
           implementation.</div>
-        <div class="fragment current-visible" style="font-size: .75em; position: absolute; bottom: 15%" data-fragment-index="0">
+        <div class="fragment current-visible" style=" font-size: .75em; position: absolute; bottom: 15%" data-fragment-index="0">
         </div>
       </section>
       <section data-auto-animate>
@@ -115,19 +115,98 @@
       </section>
       <section data-auto-animate>
         <h3>How to avoid the Yo Yo Problem?</h3>
-        <hr />
-        <div style="text-align: left">
+        <hr/>
+        <div style=" text-align: left">
           <ul>
             <li>Reduce deep hierarchies</li>
+            <li>
+              Clear documentation within the code
+            </li>
             <li>
               Use composition over inheritance
               <ul>
                 <li>"has-a" relationship over "is-a" relationship</li>
               </ul>
             </li>
-            
           </ul>
         </div>
+      </section>
+      <section data-auto-animate>
+        <h3>Fixing Previous Example with Composition</h3>
+        <hr/>
+<hr/>
+<pre><code class="javascript" data-trim data-line-numbers="0|35-40|1-4|6-19|21-32|37-38" data-fragment-index="0">
+   // Simple interface for sound making
+   interface SoundMaker {
+      void makeSound();
+   }
+
+   // Concrete sound makers
+   class DogSound implements SoundMaker {
+       @Override
+       public void makeSound() {
+           System.out.println("Woof!");
+       }
+   }
+
+   class GenericSound implements SoundMaker {
+       @Override
+       public void makeSound() {
+           System.out.println("Generic sound");
+       }
+   }
+
+   // Main animal class using composition
+   class Animal {
+       private final SoundMaker soundMaker;
+
+       public Animal(SoundMaker soundMaker) {
+           this.soundMaker = soundMaker;
+       }
+
+       public void makeSound() {
+           soundMaker.makeSound();
+       }
+   }
+
+   // Main class
+   public class Main {
+       public static void main(String[] args) {
+           Animal dog = new Animal(new DogSound());
+           dog.makeSound();
+       }
+   }
+          </code></pre>
+        <div>
+            <div class="fragment current-visible" style=" font-size: .75em; position: absolute"
+              data-fragment-index="0">Output of the following is 'Woff!', just as the developer hoped for. Let's dive into how this example is different from the previous.</div>
+            <div class="fragment current-visible" style=" font-size: .75em;position: absolute"
+                 data-fragment-index="1">Create an interface contain a single definition: `makeSound()`</div>
+            <div class="fragment current-visible" style=" font-size: .75em;position: absolute"
+                 data-fragment-index="2">Create two concrete classes of the interface `SoundMaker`. Interfaces does not implement the method, only describes what the inheriting classes need to define. The implementation of the interface is upon the conccrete classes.</div>
+
+            <div class="fragment current-visible" style=" font-size: .75em;position: absolute"
+                 data-fragment-index="3">The animal class now contains ("has-a" relationship) a SoundMaker instance. This instance will be responsible for handling the `makeSound()` method. When creating an Animal instance, the type of SoundMaker needs to be provided.</div>
+
+            <div class="fragment current-visible" style=" font-size: .75em;position: absolute"
+                 data-fragment-index="4">When initiating an Animal, an instance of sound maker is provided. And then the Animal instance can call makeSound.</div>
+        </div>
+      </section>
+      <section data-auto-animate>
+      <h3>Conclusion</h3>
+      <hr />
+      <p>In object-oriented programming, method calls bounce up and down through multiple levels of class inheritance, resulting in complicated and difficult-to-follow execution paths. In our example, instead of having a class that inherits from another class, we simply have a class that contains a component. This approach eliminates the bouncing method calls, reduces complexity, and makes the code more maintainable. Following the principle of 'favor composition over inheritance,' the behavior is now encapsulated in separate classes that can be easily swapped at runtime. The result is a simpler, more adaptable layout with a straightforward execution path that eliminates the yo-yo issue and enhances adaptability for future tweaks.</p>
+      </section>
+      <section data-auto-animate>
+        <h3>References</h3>
+        <hr />
+        <p class="reference">Bain, Scott L. (2020). Favor Composition over Inheritance. In The Design Patterns Companion. Project Management Institute.</p>
+        <p class="reference">Inheritance vs. Composition, Abstract Classes. (n.d.). https://www.cs.nmsu.edu/~cliu/cs187/2007spring01/lectures/lecture11.html</p>
+        <p class="reference">Shum, S., & Cook, C. (1991). AOPS: An Abstraction Oriented Programming System for Literate Programming [White paper]. Oregon State University.</p>
+        <p class="reference">Stephen Shum, & Curtis Cook (1993). AOPS: an abstraction-oriented programming system for
+          literate programming. Software Engineering Journal, 8, 113-120.</p>
+        <p class="reference">Taenzer, D., Ganti, M., & Podar, S. (1989). Problems in Object-Oriented Software Reuse. ECOOP.</p>
+        <p class="reference">Wilde, N. (1990). Understanding Program Dependencies. In https://insights.sei.cmu.edu/documents/1551/1990_007_001_15821.pdf (SEI-CM-26). Carnegie Mellon University Software Engineering Institute. Retrieved January 25, 2025, from https://insights.sei.cmu.edu/documents/1551/1990_007_001_15821.pdf</p>
       </section>
     </div>
   </div>
@@ -142,8 +221,8 @@
     // - https://revealjs.com/config/
     Reveal.initialize({
       hash: true,
-
-      // Learn about plugins: https://revealjs.com/plugins/
+      margin: 0.20,
+    // Learn about plugins: https://revealjs.com/plugins/
       plugins: [RevealMarkdown, RevealHighlight, RevealNotes]
     });
   </script>
