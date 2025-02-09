@@ -26,14 +26,12 @@ public class ContactBookMainView implements TableSelectionModificationListener {
      * Launch the application.
      */
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    ContactBookMainView window = new ContactBookMainView();
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                   System.out.println("Error: " + e); 
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                ContactBookMainView window = new ContactBookMainView();
+                window.frame.setVisible(true);
+            } catch (Exception e) {
+               System.out.println("Error: " + e); 
             }
         });
     }
@@ -66,11 +64,7 @@ public class ContactBookMainView implements TableSelectionModificationListener {
 
         final JButton newButton = new JButton("Create New Contact");
         frame.getContentPane().add(newButton);
-        newButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                showCreateNewDialog();
-            }
-        });
+        newButton.addActionListener(e -> showCreateNewDialog());
         newButton.setMaximumSize(new Dimension(300, 30));
         
         frame.getContentPane().add(firstPanel, c);
