@@ -1,132 +1,157 @@
 package edu.umgc.skhalar.gui;
 
-import java.awt.EventQueue;
-import java.awt.GridLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Vector;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 
-import edu.umgc.skhalar.gui.components.ContactForm;
+import edu.umgc.skhalar.gui.components.ContactFormPanel;
+import edu.umgc.skhalar.gui.components.ContactTable;
+import edu.umgc.skhalar.gui.components.CreateNewContactEntryDialog;
+import edu.umgc.skhalar.gui.interfaces.TableSelectionModificationListener;
+import edu.umgc.skhalar.model.ContactEntry;
 import edu.umgc.skhalar.model.ContactTableModel;
 
-public class ContactBookMainView {
+public class ContactBookMainView implements TableSelectionModificationListener {
 
-	private JFrame frame;
-	private JTable table;
-	private ContactTableModel tableModel = new ContactTableModel();
-	private ContactForm formPanel = new ContactForm();
+    private JFrame frame;
+    private ContactTableModel tableModel = new ContactTableModel();
+    private ContactTable table = new ContactTable(tableModel);
+    private ContactFormPanel formPanel = new ContactFormPanel(false);
+    private int previousRow = -1;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ContactBookMainView window = new ContactBookMainView();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    ContactBookMainView window = new ContactBookMainView();
+                    window.frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Create the application.
-	 */
-	public ContactBookMainView() {
-		initialize();
-	}
+    /**
+     * Create the application.
+     */
+    public ContactBookMainView() {
+        initialize();
+    }
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frame = new JFrame();
-		frame.setBounds(100, 100, 876, 589);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new GridLayout(2, 1, 0, 0));
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(new GridLayout(0, 1));
-		panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		frame.getContentPane().add(panel_1);
-		
-		table = new JTable();
-		table.setModel(this.tableModel);
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.getColumnModel().getColumn(1).setResizable(false);
-		table.getColumnModel().getColumn(2).setResizable(false);
-		table.getColumnModel().getColumn(3).setResizable(false);
-		table.getColumnModel().getColumn(4).setResizable(false);
-		table.getColumnModel().getColumn(5).setResizable(false);
-		table.getColumnModel().getColumn(6).setResizable(false);
-		table.addMouseListener(new RowOnClick(this.formPanel));
-		
-		JScrollPane tableScrollPane = new JScrollPane(table);
-		tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		tableScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-		tableScrollPane.setViewportBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		
-		panel_1.add(tableScrollPane);
-		
-		frame.getContentPane().add(this.formPanel);
-	}
-	
-	
-	private class RowOnClick implements MouseListener {
+    /**
+     * Initialize the contents of the frame.
+     */
+    private void initialize() {
+        frame = new JFrame();
+        frame.setBounds(100, 100, 800, 800);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+       
+        // Add Create new button
+        final JPanel firstPanel = new JPanel();
+        firstPanel.setPreferredSize(new Dimension(100, 30));
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0.0;
 
-		ContactForm form; 
-		
-		public RowOnClick(ContactForm form) {
-			this.form = form;
-		}
-		
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			System.out.println("Row clicked");
-			final Vector<String> rowData = new Vector<String>();
-			final JTable table = (JTable) e.getSource();
-			final int columns = table.getColumnCount();
-			final int row = table.getSelectedRow();
-			for (int i = 0; i < columns; i++) {
-				rowData.add((String) table.getValueAt(row, i));
-			}
-			
-			this.form.updateCurrentForm(rowData);
-		}
+        final JButton newButton = new JButton("Create New Contact");
+        frame.getContentPane().add(newButton);
+        newButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                showCreateNewDialog();
+            }
+        });
+        newButton.setMaximumSize(new Dimension(300, 30));
+        
+        frame.getContentPane().add(firstPanel, c);
 
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+        // Add the Contact Table
+        c.gridy++;
+        c.weighty = 1.0;
+        JPanel panel_1 = new JPanel();
+        panel_1.setLayout(new GridLayout(0, 1));
+        panel_1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        frame.getContentPane().add(panel_1, c);
 
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+        JScrollPane tableScrollPane = new JScrollPane(table);
+        tableScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        tableScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+        tableScrollPane.setViewportBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        panel_1.add(tableScrollPane);
+        
+        // Add main view to listen to events
+        this.table.addTableSelectionListener(this);
+        this.formPanel.addListener(this);
+        
+        // Add the Contact Form
+        c.gridy++;
+        frame.getContentPane().add(this.formPanel, c);
+    }
 
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
+    private void showCreateNewDialog() {
+        CreateNewContactEntryDialog dialog = new CreateNewContactEntryDialog(this.frame);
+        dialog.setVisible(true);
 
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
+        if (dialog.isApproved()) {
+            // Add new contact to table model;
+            this.tableModel.addContactEntry(
+                    dialog.createContactEntry()
+            );
+
+            // Select the newly added row
+            int newRow = this.tableModel.getRowCount() - 1;
+            this.table.setRowSelectionInterval(newRow, newRow);
+        }
+    }
+
+    @Override
+    public void onContactSelected(int row, ContactEntry entry) {
+        if (row == -1) {
+            return;
+        }
+        
+        if (this.formPanel.isDirty() && this.previousRow != row) {
+            int response = JOptionPane.showConfirmDialog(
+                    this.frame, 
+                    "Unsaved changes detected.",
+                    "Unsaved changes detecteed. Save changes?",
+                    JOptionPane.YES_NO_CANCEL_OPTION
+            );
+            
+            if (response == JOptionPane.YES_OPTION) {
+                // TODO - save changes
+            } else if (response == JOptionPane.CANCEL_OPTION) {
+                this.table.setRowSelectionInterval(this.previousRow, this.previousRow);
+                return;
+            }
+            
+            this.previousRow = row;
+            this.formPanel.loadContact(
+                    row,
+                    this.tableModel.getContactEntry(row)
+            );
+        } else {
+            this.formPanel.loadContact(row, this.tableModel.getContactEntry(row));
+        }
+    }
+
+    @Override
+    public void onDelete(int rowIndex) {
+        this.tableModel.removeContactEntry(rowIndex);
+    }
+
+    @Override
+    public void onUpdate(int rowIndex, ContactEntry entry) {
+        this.tableModel.updateContactEntry(rowIndex, entry);
+    }
 }
