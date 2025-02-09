@@ -80,16 +80,14 @@ public class ContactFormPanel extends JPanel {
             buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
             this.saveButton.setEnabled(false);
-            this.saveButton.addActionListener(e -> {
+            this.saveButton.addActionListener(_ -> {
                 for (TableSelectionModificationListener listener : this.listenerList) {
                     listener.onUpdate(this.originalRowIndex, createContactEntry());
                 }
             });
 
             this.deleteButton.setEnabled(false);
-            this.deleteButton.addActionListener(e -> {
-                onDelete();
-            });
+            this.deleteButton.addActionListener(_ -> onDelete());
 
             // Add buttons to the panel
             buttonPanel.add(this.saveButton);
@@ -143,7 +141,8 @@ public class ContactFormPanel extends JPanel {
 
     /**
      * Add listener to the events of this form
-     * @param listener  Listener of the events
+     *
+     * @param listener Listener of the events
      */
     public void addListener(TableSelectionModificationListener listener) {
         this.listenerList.add(listener);
@@ -151,9 +150,10 @@ public class ContactFormPanel extends JPanel {
 
     /**
      * Build form fields
-     * @param columnName    Column name of the form field
-     * @param gridY         Location of the form field on the Y axis
-     * @return              The newly created textfield
+     *
+     * @param columnName Column name of the form field
+     * @param gridY      Location of the form field on the Y axis
+     * @return The newly created textfield
      */
     private JTextField buildFormField(final String columnName, int gridY) {
         final JTextField textField;
@@ -178,7 +178,7 @@ public class ContactFormPanel extends JPanel {
     }
 
     /**
-     * Set up listeners for the entire document. When any changes occurs to the text fields, 
+     * Set up listeners for the entire document. When any changes occurs to the text fields,
      * the dirty flag will be marked as true. If the changes are reverted, the flag will be false
      */
     private void setupListeners() {
@@ -222,8 +222,9 @@ public class ContactFormPanel extends JPanel {
 
     /**
      * Load a new contract entry into the form
-     * @param row       Row index in the table
-     * @param entry     Contact entry to load
+     *
+     * @param row   Row index in the table
+     * @param entry Contact entry to load
      */
     public void loadContact(int row, final ContactEntry entry) {
         this.deleteButton.setEnabled(true);
@@ -255,7 +256,8 @@ public class ContactFormPanel extends JPanel {
 
     /**
      * Create a new contact entry from the form field
-     * @return  Newly create Contact Entry
+     *
+     * @return Newly create Contact Entry
      */
     public ContactEntry createContactEntry() {
         return new ContactEntry(
@@ -271,7 +273,8 @@ public class ContactFormPanel extends JPanel {
 
     /**
      * Validate form
-     * @return  String message of the missing fields
+     *
+     * @return String message of the missing fields
      */
     public String validateContactEntry() {
         String message = "";
@@ -287,9 +290,10 @@ public class ContactFormPanel extends JPanel {
 
     /**
      * Validate a text field. If it's empty, it'll return a string indicating that field is empty
-     * @param textField     JTextfield to validate
-     * @param fieldName     Name of that text field
-     * @return              String indicating if the field if empty
+     *
+     * @param textField JTextfield to validate
+     * @param fieldName Name of that text field
+     * @return String indicating if the field if empty
      */
     private String validateTextFields(final JTextField textField, final String fieldName) {
         if (Objects.equals(textField.getText(), "") || Objects.equals(textField.getText(), null)) {

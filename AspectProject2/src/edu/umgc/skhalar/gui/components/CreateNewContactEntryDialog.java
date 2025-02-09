@@ -33,7 +33,7 @@ public class CreateNewContactEntryDialog extends JDialog {
         JButton saveButton = new JButton("Save");
         JButton cancelButton = new JButton("Cancel");
 
-        saveButton.addActionListener(e -> {
+        saveButton.addActionListener(_ -> {
             final String validMessage = this.contactForm.validateContactEntry();
             if (validMessage == null || !validMessage.isEmpty()) {
                  JOptionPane.showMessageDialog(this, 
@@ -44,7 +44,7 @@ public class CreateNewContactEntryDialog extends JDialog {
             }
         });
 
-        cancelButton.addActionListener(e -> dispose());
+        cancelButton.addActionListener(_ -> dispose());
 
         buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);

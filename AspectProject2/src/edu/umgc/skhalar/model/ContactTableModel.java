@@ -11,7 +11,7 @@ public class ContactTableModel extends AbstractTableModel {
 
     final ArrayList<ContactEntry> contacts = new ArrayList<>();
 
-    final Vector<String> columns = new Vector<String>(
+    final Vector<String> columns = new Vector<>(
             Arrays.asList("First Name", "Last Name", "Street Address", "City", "State/Providence", "Country",
                     "Phone Number"));
 

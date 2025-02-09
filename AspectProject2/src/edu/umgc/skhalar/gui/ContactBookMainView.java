@@ -17,9 +17,9 @@ import edu.umgc.skhalar.model.ContactTableModel;
 public class ContactBookMainView implements TableSelectionModificationListener {
 
     private JFrame frame;
-    private ContactTableModel tableModel = new ContactTableModel();
-    private ContactTable table = new ContactTable(tableModel);
-    private ContactFormPanel formPanel = new ContactFormPanel(false);
+    private final ContactTableModel tableModel = new ContactTableModel();
+    private final ContactTable table = new ContactTable(tableModel);
+    private final ContactFormPanel formPanel = new ContactFormPanel(false);
     private int previousRow = -1;
 
     /**
@@ -32,7 +32,7 @@ public class ContactBookMainView implements TableSelectionModificationListener {
                     ContactBookMainView window = new ContactBookMainView();
                     window.frame.setVisible(true);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                   System.out.println("Error: " + e); 
                 }
             }
         });
@@ -124,12 +124,12 @@ public class ContactBookMainView implements TableSelectionModificationListener {
             int response = JOptionPane.showConfirmDialog(
                     this.frame, 
                     "Unsaved changes detected.",
-                    "Unsaved changes detecteed. Save changes?",
+                    "Unsaved changes detected. Save changes?",
                     JOptionPane.YES_NO_CANCEL_OPTION
             );
             
             if (response == JOptionPane.YES_OPTION) {
-                // TODO - save changes
+                this.tableModel.addContactEntry(entry);
             } else if (response == JOptionPane.CANCEL_OPTION) {
                 this.table.setRowSelectionInterval(this.previousRow, this.previousRow);
                 return;
