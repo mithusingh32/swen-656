@@ -20,7 +20,7 @@ public interface TableSelectionModificationListener {
     /**
      * Event for when update is performed
      * @param rowIndex  Row index of the updated in the table
-     * @param entry     The updated Contact Entry
+     * @param newEntry     The updated Contact Entry
      */
-    void onUpdate(int rowIndex, ContactEntry entry);
+    void onUpdate(int rowIndex, ContactEntry newEntry, ContactEntry oldEntry);
 }

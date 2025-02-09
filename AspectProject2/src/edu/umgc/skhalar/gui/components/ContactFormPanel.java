@@ -86,7 +86,7 @@ public class ContactFormPanel extends JPanel {
             this.saveButton.addActionListener(e -> {
                 for (TableSelectionModificationListener listener : this.listenerList) {
                     final ContactEntry entry = createContactEntry();
-                    listener.onUpdate(this.originalRowIndex, entry);
+                    listener.onUpdate(this.originalRowIndex, entry, selectedContactEntry);
                     this.selectedContactEntry = entry;
                 }
             });
@@ -309,5 +309,23 @@ public class ContactFormPanel extends JPanel {
      */
     public boolean isDirty() {
         return this.isDirty;
+    }
+
+    /**
+     * Gets selectedContactEntry
+     *
+     * @return value of {@link ContactFormPanel#selectedContactEntry}
+     */
+    public ContactEntry getSelectedContactEntry() {
+        return selectedContactEntry;
+    }
+
+    /**
+     * Gets originalRowIndex
+     *
+     * @return value of {@link ContactFormPanel#originalRowIndex}
+     */
+    public int getOriginalRowIndex() {
+        return originalRowIndex;
     }
 }

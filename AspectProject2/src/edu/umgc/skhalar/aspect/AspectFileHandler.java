@@ -11,7 +11,7 @@ import java.nio.file.StandardOpenOption;
 /**
  * Abstract class to handle appending messages to a file
  */
-abstract class FileHandler {
+abstract class AspectFileHandler {
     /**
      * Enum indicating if it's a delete or update
      */
@@ -25,7 +25,7 @@ abstract class FileHandler {
      */
     final String fileName;
     
-    protected FileHandler(final String fileName) {
+    protected AspectFileHandler(final String fileName) {
         this.fileName = fileName;
     }
 

@@ -111,7 +111,8 @@ public class ContactBookMainView implements TableSelectionModificationListener {
             );
             
             if (response == JOptionPane.YES_OPTION) {
-                this.onUpdate(row, entry);
+                this.onUpdate(this.formPanel.getOriginalRowIndex(), this.formPanel.createContactEntry(),
+                        this.formPanel.getSelectedContactEntry());
             } else if (response == JOptionPane.CANCEL_OPTION) {
                 this.table.setRowSelectionInterval(this.previousRow, this.previousRow);
                 return;
@@ -133,8 +134,8 @@ public class ContactBookMainView implements TableSelectionModificationListener {
     }
 
     @Override
-    public void onUpdate(int rowIndex, ContactEntry entry) {
-        this.tableModel.updateContactEntry(rowIndex, entry);
+    public void onUpdate(int rowIndex, ContactEntry newEntry, ContactEntry oldEntry) {
+        this.tableModel.updateContactEntry(rowIndex, newEntry);
         this.formPanel.loadContact(rowIndex, this.tableModel.getContactEntry(rowIndex));
     }
 }
