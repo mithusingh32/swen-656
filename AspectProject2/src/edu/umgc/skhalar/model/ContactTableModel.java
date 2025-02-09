@@ -3,12 +3,15 @@ package edu.umgc.skhalar.model;
 import edu.umgc.skhalar.Constants;
 
 import javax.swing.table.AbstractTableModel;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
 public class ContactTableModel extends AbstractTableModel {
-
+    @Serial
+    private static final long serialVersionUID = 1L;
     final ArrayList<ContactEntry> contacts = new ArrayList<>();
 
     final Vector<String> columns = new Vector<>(
@@ -60,17 +63,30 @@ public class ContactTableModel extends AbstractTableModel {
             fireTableRowsUpdated(rowIndex, rowIndex);
         }
     }
-    
+
+    /**
+     * Add entry to the table
+     * @param contactEntry  Contact Entry to add into the table
+     */
     public void addContactEntry(ContactEntry contactEntry) {
         this.contacts.add(contactEntry);
         fireTableRowsInserted(this.contacts.size() - 1, this.contacts.size() - 1);
     }
-    
+
+    /**
+     * Remove the contact entry from the table
+     * @param rowIndex  Row index to remove
+     */
     public void removeContactEntry(final int rowIndex) {
         this.contacts.remove(rowIndex);
         fireTableRowsDeleted(rowIndex, rowIndex);
     }
-    
+
+    /**
+     * Get the contact entry for row index
+     * @param rowIndex  Row index
+     * @return  Contact entry for the row index
+     */
     public ContactEntry getContactEntry(int rowIndex) {
         return contacts.get(rowIndex);
     }

@@ -6,10 +6,15 @@ import edu.umgc.skhalar.model.ContactEntry;
 
 import javax.swing.*;
 import javax.swing.table.TableModel;
+
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContactTable extends JTable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+	
     final List<TableSelectionModificationListener> listeners = new ArrayList<>();
 
     public ContactTable(final TableModel tableModel) {
@@ -23,6 +28,9 @@ public class ContactTable extends JTable {
         this.getColumnModel().getColumn(Constants.COUNTRY_COLUMN).setResizable(false);
         this.getColumnModel().getColumn(Constants.PHONE_COLUMN).setResizable(false);
 
+        /*
+         * Add listener for when a row is clicked and emit the event to listener  
+         */
         getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = getSelectedRow();
@@ -42,10 +50,19 @@ public class ContactTable extends JTable {
         });
     }
 
+    /**
+     * Add listener to table for events emitted by the table
+     * @param listener      Listener to table
+     */
     public void addTableSelectionListener(final TableSelectionModificationListener listener) {
         this.listeners.add(listener);
     }
 
+    /**
+     * Notifies listeners when a row is selected in the table
+     * @param rowIndex  Row Index of the selected row
+     * @param entry     Entry associated with the selected row
+     */
     private void notifyListeners(int rowIndex, final ContactEntry entry) {
         for (final TableSelectionModificationListener listener : this.listeners) {
             listener.onContactSelected(rowIndex, entry);

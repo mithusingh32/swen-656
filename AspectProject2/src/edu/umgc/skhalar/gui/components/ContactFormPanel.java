@@ -80,14 +80,19 @@ public class ContactFormPanel extends JPanel {
             buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
             this.saveButton.setEnabled(false);
-            this.saveButton.addActionListener(_ -> {
+            
+            // On Click of the save button, emit onUpdate event to listener
+            // and update the selectedRow to the newly updated Contact Entry
+            this.saveButton.addActionListener(e -> {
                 for (TableSelectionModificationListener listener : this.listenerList) {
-                    listener.onUpdate(this.originalRowIndex, createContactEntry());
+                    final ContactEntry entry = createContactEntry();
+                    listener.onUpdate(this.originalRowIndex, entry);
+                    this.selectedContactEntry = entry;
                 }
             });
 
             this.deleteButton.setEnabled(false);
-            this.deleteButton.addActionListener(_ -> onDelete());
+            this.deleteButton.addActionListener(e -> onDeleteConfirmation());
 
             // Add buttons to the panel
             buttonPanel.add(this.saveButton);
@@ -105,16 +110,13 @@ public class ContactFormPanel extends JPanel {
         setupListeners();
     }
 
-    /**
-     * Create a dialog for confirmation before performing delete
-     */
-    private void onDelete() {
+    private void onDeleteConfirmation() {
         int response = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this contact?",
                 "Delete Contact?", JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
             for (TableSelectionModificationListener listener : this.listenerList) {
-                listener.onDelete(this.originalRowIndex);
+                listener.onDelete(this.originalRowIndex, this.selectedContactEntry);
             }
 
             // Reset all fields

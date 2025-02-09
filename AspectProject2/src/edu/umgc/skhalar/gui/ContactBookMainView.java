@@ -13,25 +13,13 @@ import java.awt.*;
 
 public class ContactBookMainView implements TableSelectionModificationListener {
 
-    private JFrame frame;
+    public JFrame frame;
     private final ContactTableModel tableModel = new ContactTableModel();
     private final ContactTable table = new ContactTable(tableModel);
     private final ContactFormPanel formPanel = new ContactFormPanel(false);
     private int previousRow = -1;
 
-    /**
-     * Launch the application.
-     */
-    public static void main(String[] args) {
-        EventQueue.invokeLater(() -> {
-            try {
-                ContactBookMainView window = new ContactBookMainView();
-                window.frame.setVisible(true);
-            } catch (Exception e) {
-               System.out.println("Error: " + e); 
-            }
-        });
-    }
+
 
     /**
      * Create the application.
@@ -61,7 +49,7 @@ public class ContactBookMainView implements TableSelectionModificationListener {
 
         final JButton newButton = new JButton("Create New Contact");
         frame.getContentPane().add(newButton);
-        newButton.addActionListener(_ -> showCreateNewDialog());
+        newButton.addActionListener(e -> showCreateNewDialog());
         newButton.setMaximumSize(new Dimension(300, 30));
         
         frame.getContentPane().add(firstPanel, c);
@@ -89,6 +77,9 @@ public class ContactBookMainView implements TableSelectionModificationListener {
         frame.getContentPane().add(this.formPanel, c);
     }
 
+    /**
+     * Creates a dialog which allows the user create a new Contact Entry
+     */
     private void showCreateNewDialog() {
         CreateNewContactEntryDialog dialog = new CreateNewContactEntryDialog(this.frame);
         dialog.setVisible(true);
@@ -120,7 +111,7 @@ public class ContactBookMainView implements TableSelectionModificationListener {
             );
             
             if (response == JOptionPane.YES_OPTION) {
-                this.tableModel.addContactEntry(entry);
+                this.onUpdate(row, entry);
             } else if (response == JOptionPane.CANCEL_OPTION) {
                 this.table.setRowSelectionInterval(this.previousRow, this.previousRow);
                 return;
@@ -137,12 +128,13 @@ public class ContactBookMainView implements TableSelectionModificationListener {
     }
 
     @Override
-    public void onDelete(int rowIndex) {
+    public void onDelete(int rowIndex, ContactEntry entry) {
         this.tableModel.removeContactEntry(rowIndex);
     }
 
     @Override
     public void onUpdate(int rowIndex, ContactEntry entry) {
         this.tableModel.updateContactEntry(rowIndex, entry);
+        this.formPanel.loadContact(rowIndex, this.tableModel.getContactEntry(rowIndex));
     }
 }

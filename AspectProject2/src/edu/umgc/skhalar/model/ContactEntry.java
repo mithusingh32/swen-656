@@ -1,6 +1,7 @@
 package edu.umgc.skhalar.model;
 
 import java.util.Objects;
+import java.util.StringJoiner;
 
 public class ContactEntry {
     private final String firstName;
@@ -101,4 +102,18 @@ public class ContactEntry {
     public int hashCode() {
         return Objects.hash(firstName, lastName, streetAddress, city, state, country, phoneNumber);
     }
+
+	@Override
+	public String toString() {
+		return new StringJoiner(" ")
+				.add(firstName)
+				.add(lastName)
+				.add(streetAddress)
+				.add(city)
+				.add(state)
+				.add(country)
+				.add(phoneNumber)
+				.toString();
+	}
+    
 }

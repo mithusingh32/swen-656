@@ -33,7 +33,11 @@ public class CreateNewContactEntryDialog extends JDialog {
         JButton saveButton = new JButton("Save");
         JButton cancelButton = new JButton("Cancel");
 
-        saveButton.addActionListener(_ -> {
+        /*
+         * On save, validate the fields. If there are any missing fields an error message is displayed
+         * indicating which fields are missing
+         */
+        saveButton.addActionListener(e -> {
             final String validMessage = this.contactForm.validateContactEntry();
             if (validMessage == null || !validMessage.isEmpty()) {
                  JOptionPane.showMessageDialog(this, 
@@ -42,9 +46,9 @@ public class CreateNewContactEntryDialog extends JDialog {
                 approved = true;
                 dispose();
             }
-        });
+        });     
 
-        cancelButton.addActionListener(_ -> dispose());
+        cancelButton.addActionListener(e -> dispose());
 
         buttonPanel.add(saveButton);
         buttonPanel.add(cancelButton);
@@ -55,9 +59,16 @@ public class CreateNewContactEntryDialog extends JDialog {
         setLocationRelativeTo(getOwner());
     }
 
+    /**
+     * @return Indicates if the new contact was valid and ready to be added to the table
+     */
     public boolean isApproved() {
         return approved;
     }
+
+    /**
+     * @return Contact Entry from the dialog fields
+     */
     public ContactEntry createContactEntry() {
         return contactForm.createContactEntry();
     }
