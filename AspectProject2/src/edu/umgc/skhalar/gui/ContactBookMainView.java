@@ -1,18 +1,15 @@
 package edu.umgc.skhalar.gui;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-
 import edu.umgc.skhalar.gui.components.ContactFormPanel;
 import edu.umgc.skhalar.gui.components.ContactTable;
 import edu.umgc.skhalar.gui.components.CreateNewContactEntryDialog;
 import edu.umgc.skhalar.gui.interfaces.TableSelectionModificationListener;
 import edu.umgc.skhalar.model.ContactEntry;
 import edu.umgc.skhalar.model.ContactTableModel;
+
+import javax.swing.*;
+import javax.swing.border.EtchedBorder;
+import java.awt.*;
 
 public class ContactBookMainView implements TableSelectionModificationListener {
 
