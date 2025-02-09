@@ -61,7 +61,7 @@ public class ContactBookMainView implements TableSelectionModificationListener {
 
         final JButton newButton = new JButton("Create New Contact");
         frame.getContentPane().add(newButton);
-        newButton.addActionListener(e -> showCreateNewDialog());
+        newButton.addActionListener(_ -> showCreateNewDialog());
         newButton.setMaximumSize(new Dimension(300, 30));
         
         frame.getContentPane().add(firstPanel, c);
