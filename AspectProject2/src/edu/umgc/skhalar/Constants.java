@@ -9,6 +9,6 @@ public final class Constants {
     public static final int STREET_COLUMN = 2;
     public static final int CITY_COLUMN = 3;
     public static final int STATE_COLUMN = 4;
-    public static final int COUNTRY_COLUMN = 5;
+    public static final int ZIP_CODE = 5;
     public static final int PHONE_COLUMN = 6;
 }

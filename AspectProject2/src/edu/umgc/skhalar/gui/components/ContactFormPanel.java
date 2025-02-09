@@ -26,7 +26,7 @@ public class ContactFormPanel extends JPanel {
     private final JTextField streetTextField;
     private final JTextField cityTextField;
     private final JTextField stateTextField;
-    private final JTextField countryTextField;
+    private final JTextField zipCodeTextField;
     private final JTextField phoneTextField;
 
     /**
@@ -71,7 +71,7 @@ public class ContactFormPanel extends JPanel {
         this.streetTextField = buildFormField("Street Address", gridy++);
         this.cityTextField = buildFormField("City", gridy++);
         this.stateTextField = buildFormField("State/Providence", gridy++);
-        this.countryTextField = buildFormField("Country", gridy++);
+        this.zipCodeTextField = buildFormField("Zip Code", gridy++);
         this.phoneTextField = buildFormField("Phone", gridy++);
 
         // Create a panel for buttons only if it's not a dialog
@@ -125,7 +125,7 @@ public class ContactFormPanel extends JPanel {
             this.streetTextField.setText("");
             this.cityTextField.setText("");
             this.stateTextField.setText("");
-            this.countryTextField.setText("");
+            this.zipCodeTextField.setText("");
             this.phoneTextField.setText("");
 
             // Disable all fields
@@ -134,7 +134,7 @@ public class ContactFormPanel extends JPanel {
             this.streetTextField.setEnabled(false);
             this.cityTextField.setEnabled(false);
             this.stateTextField.setEnabled(false);
-            this.countryTextField.setEnabled(false);
+            this.zipCodeTextField.setEnabled(false);
             this.phoneTextField.setEnabled(false);
             this.saveButton.setEnabled(true);
             this.deleteButton.setEnabled(true);
@@ -215,7 +215,7 @@ public class ContactFormPanel extends JPanel {
                     || !Objects.equals(this.streetTextField.getText(), this.selectedContactEntry.getStreetAddress())
                     || !Objects.equals(this.cityTextField.getText(), this.selectedContactEntry.getCity())
                     || !Objects.equals(this.stateTextField.getText(), this.selectedContactEntry.getState())
-                    || !Objects.equals(this.countryTextField.getText(), this.selectedContactEntry.getCountry())
+                    || !Objects.equals(this.zipCodeTextField.getText(), this.selectedContactEntry.getZipcode())
                     || !Objects.equals(this.phoneTextField.getText(), this.selectedContactEntry.getPhoneNumber());
         }
 
@@ -247,8 +247,8 @@ public class ContactFormPanel extends JPanel {
         this.stateTextField.setText(entry.getState());
         this.stateTextField.setEnabled(true);
 
-        this.countryTextField.setText(entry.getCountry());
-        this.countryTextField.setEnabled(true);
+        this.zipCodeTextField.setText(entry.getZipcode());
+        this.zipCodeTextField.setEnabled(true);
 
         this.phoneTextField.setText(entry.getPhoneNumber());
         this.phoneTextField.setEnabled(true);
@@ -268,7 +268,7 @@ public class ContactFormPanel extends JPanel {
                 this.streetTextField.getText(),
                 this.cityTextField.getText(),
                 this.stateTextField.getText(),
-                this.countryTextField.getText(),
+                this.zipCodeTextField.getText(),
                 this.phoneTextField.getText()
         );
     }
@@ -285,7 +285,7 @@ public class ContactFormPanel extends JPanel {
         message += validateTextFields(this.streetTextField, "Street Address");
         message += validateTextFields(this.cityTextField, "City");
         message += validateTextFields(this.stateTextField, "State/Providence");
-        message += validateTextFields(this.countryTextField, "Country");
+        message += validateTextFields(this.zipCodeTextField, "Zip Code");
         message += validateTextFields(this.phoneTextField, "Phone Number");
         return message;
     }

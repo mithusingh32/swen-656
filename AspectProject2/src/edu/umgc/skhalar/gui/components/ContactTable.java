@@ -25,7 +25,7 @@ public class ContactTable extends JTable {
         this.getColumnModel().getColumn(Constants.STREET_COLUMN).setResizable(false);
         this.getColumnModel().getColumn(Constants.CITY_COLUMN).setResizable(false);
         this.getColumnModel().getColumn(Constants.STATE_COLUMN).setResizable(false);
-        this.getColumnModel().getColumn(Constants.COUNTRY_COLUMN).setResizable(false);
+        this.getColumnModel().getColumn(Constants.ZIP_CODE).setResizable(false);
         this.getColumnModel().getColumn(Constants.PHONE_COLUMN).setResizable(false);
 
         /*
@@ -40,10 +40,10 @@ public class ContactTable extends JTable {
                     final String street = (String) getValueAt(selectedRow, Constants.STREET_COLUMN);
                     final String city = (String) getValueAt(selectedRow, Constants.CITY_COLUMN);
                     final String state = (String) getValueAt(selectedRow, Constants.STATE_COLUMN);
-                    final String country = (String) getValueAt(selectedRow, Constants.COUNTRY_COLUMN);
+                    final String zipcode = (String) getValueAt(selectedRow, Constants.ZIP_CODE);
                     final String phone = (String) getValueAt(selectedRow, Constants.PHONE_COLUMN);
                     final ContactEntry entry =
-                            new ContactEntry(firstName, lastName, street, city, state, country, phone);
+                            new ContactEntry(firstName, lastName, street, city, state, zipcode, phone);
                     notifyListeners(selectedRow, entry);
                 }
             }

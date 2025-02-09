@@ -9,17 +9,17 @@ public class ContactEntry {
     private final String streetAddress;
     private final String city;
     private final String state;
-    private final String country;
+    private final String zipcode;
     private final String phoneNumber;
 
     public ContactEntry(String firstName, String lastName, String streetAddress, String city, String state,
-                        String country, String phoneNumber) {
+                        String zipcode, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.streetAddress = streetAddress;
         this.city = city;
         this.state = state;
-        this.country = country;
+        this.zipcode = zipcode;
         this.phoneNumber = phoneNumber;
     }
 
@@ -69,12 +69,12 @@ public class ContactEntry {
     }
 
     /**
-     * Gets country
+     * Gets zip code
      *
-     * @return value of {@link ContactEntry#country}
+     * @return value of {@link ContactEntry#zipcode}
      */
-    public String getCountry() {
-        return country;
+    public String getZipcode() {
+        return zipcode;
     }
 
     /**
@@ -94,13 +94,13 @@ public class ContactEntry {
         ContactEntry that = (ContactEntry) o;
         return Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName)
                 && Objects.equals(streetAddress, that.streetAddress) && Objects.equals(city, that.city)
-                && Objects.equals(state, that.state) && Objects.equals(country, that.country)
+                && Objects.equals(state, that.state) && Objects.equals(zipcode, that.zipcode)
                 && Objects.equals(phoneNumber, that.phoneNumber);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(firstName, lastName, streetAddress, city, state, country, phoneNumber);
+        return Objects.hash(firstName, lastName, streetAddress, city, state, zipcode, phoneNumber);
     }
 
 	@Override
@@ -111,7 +111,7 @@ public class ContactEntry {
 				.add(streetAddress)
 				.add(city)
 				.add(state)
-				.add(country)
+				.add(zipcode)
 				.add(phoneNumber)
 				.toString();
 	}

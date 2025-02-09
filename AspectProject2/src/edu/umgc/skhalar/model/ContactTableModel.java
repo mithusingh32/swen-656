@@ -15,7 +15,7 @@ public class ContactTableModel extends AbstractTableModel {
     final ArrayList<ContactEntry> contacts = new ArrayList<>();
 
     final Vector<String> columns = new Vector<>(
-            Arrays.asList("First Name", "Last Name", "Street Address", "City", "State/Providence", "Country",
+            Arrays.asList("First Name", "Last Name", "Street Address", "City", "State/Providence", "Zip Code",
                     "Phone Number"));
 
     public ContactTableModel() {
@@ -41,7 +41,7 @@ public class ContactTableModel extends AbstractTableModel {
             case Constants.STREET_COLUMN -> entry.getStreetAddress();
             case Constants.CITY_COLUMN -> entry.getCity();
             case Constants.STATE_COLUMN -> entry.getState();
-            case Constants.COUNTRY_COLUMN -> entry.getCountry();
+            case Constants.ZIP_CODE -> entry.getZipcode();
             case Constants.PHONE_COLUMN -> entry.getPhoneNumber();
             default -> "";
         };
